@@ -56,14 +56,5 @@
     <a name="circuit" val="main"/>
     <a name="circuitnamedboxfixedsize" val="true"/>
     <a name="simulationFrequency" val="2048000.0"/>
-    <comp lib="4" loc="(120,270)" name="S-R Flip-Flop">
-      <a name="appearance" val="logisim_evolution"/>
-    </comp>
-    <comp lib="4" loc="(350,380)" name="Shift Register">
-      <a name="appearance" val="logisim_evolution"/>
-    </comp>
-    <comp lib="4" loc="(390,260)" name="D Flip-Flop">
-      <a name="appearance" val="logisim_evolution"/>
-    </comp>
   </circuit>
 </project>
