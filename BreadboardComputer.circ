@@ -56,46 +56,14 @@
     <a name="circuit" val="main"/>
     <a name="circuitnamedboxfixedsize" val="true"/>
     <a name="simulationFrequency" val="2048000.0"/>
-    <comp lib="0" loc="(570,590)" name="Clock"/>
-    <comp lib="3" loc="(290,400)" name="FPMultiplier"/>
-    <comp lib="3" loc="(330,100)" name="BitFinder"/>
-    <comp lib="3" loc="(360,250)" name="Adder"/>
-    <comp lib="3" loc="(380,250)" name="FPNegator"/>
-    <comp lib="3" loc="(400,180)" name="FPMultiplier"/>
-    <comp lib="3" loc="(460,370)" name="Comparator"/>
-    <comp lib="5" loc="(660,550)" name="RGBLED"/>
-    <comp lib="6" loc="(130,480)" name="7430"/>
-    <comp lib="6" loc="(150,360)" name="7418"/>
-    <comp lib="6" loc="(290,640)" name="7430"/>
-    <comp lib="6" loc="(350,70)" name="7421"/>
-    <comp lib="6" loc="(370,540)" name="7411"/>
-    <comp lib="6" loc="(470,290)" name="7414"/>
-    <comp lib="6" loc="(610,180)" name="7411"/>
-    <comp lib="6" loc="(620,180)" name="7421"/>
-    <comp lib="6" loc="(70,630)" name="7421"/>
-    <wire from="(100,280)" to="(100,320)"/>
-    <wire from="(100,280)" to="(610,280)"/>
-    <wire from="(1140,190)" to="(1140,240)"/>
-    <wire from="(140,240)" to="(140,290)"/>
-    <wire from="(140,240)" to="(320,240)"/>
-    <wire from="(320,240)" to="(610,240)"/>
-    <wire from="(340,360)" to="(340,370)"/>
-    <wire from="(340,370)" to="(460,370)"/>
-    <wire from="(410,420)" to="(410,550)"/>
-    <wire from="(410,550)" to="(610,550)"/>
-    <wire from="(460,370)" to="(610,370)"/>
-    <wire from="(570,590)" to="(650,590)"/>
-    <wire from="(610,240)" to="(1140,240)"/>
-    <wire from="(610,240)" to="(610,280)"/>
-    <wire from="(610,280)" to="(610,370)"/>
-    <wire from="(610,370)" to="(610,550)"/>
-    <wire from="(610,550)" to="(650,550)"/>
-    <wire from="(650,530)" to="(650,550)"/>
-    <wire from="(650,530)" to="(670,530)"/>
-    <wire from="(650,550)" to="(650,590)"/>
-    <wire from="(650,550)" to="(660,550)"/>
-    <wire from="(650,590)" to="(670,590)"/>
-    <wire from="(670,530)" to="(670,540)"/>
-    <wire from="(670,560)" to="(670,590)"/>
+    <comp lib="4" loc="(120,270)" name="S-R Flip-Flop">
+      <a name="appearance" val="logisim_evolution"/>
+    </comp>
+    <comp lib="4" loc="(350,380)" name="Shift Register">
+      <a name="appearance" val="logisim_evolution"/>
+    </comp>
+    <comp lib="4" loc="(390,260)" name="D Flip-Flop">
+      <a name="appearance" val="logisim_evolution"/>
+    </comp>
   </circuit>
 </project>
