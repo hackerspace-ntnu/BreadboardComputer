@@ -56,5 +56,15 @@
     <a name="circuit" val="main"/>
     <a name="circuitnamedboxfixedsize" val="true"/>
     <a name="simulationFrequency" val="2048000.0"/>
+    <comp lib="0" loc="(570,590)" name="Clock"/>
+    <comp lib="5" loc="(660,550)" name="RGBLED"/>
+    <wire from="(570,590)" to="(650,590)"/>
+    <wire from="(650,530)" to="(650,550)"/>
+    <wire from="(650,530)" to="(670,530)"/>
+    <wire from="(650,550)" to="(650,590)"/>
+    <wire from="(650,550)" to="(660,550)"/>
+    <wire from="(650,590)" to="(670,590)"/>
+    <wire from="(670,530)" to="(670,540)"/>
+    <wire from="(670,560)" to="(670,590)"/>
   </circuit>
 </project>
