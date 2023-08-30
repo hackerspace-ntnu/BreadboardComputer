@@ -57,6 +57,10 @@
     <a name="circuitnamedboxfixedsize" val="true"/>
     <a name="simulationFrequency" val="2048000.0"/>
     <comp lib="0" loc="(570,590)" name="Clock"/>
+    <comp lib="3" loc="(290,400)" name="FPMultiplier"/>
+    <comp lib="3" loc="(330,100)" name="BitFinder"/>
+    <comp lib="3" loc="(360,250)" name="Adder"/>
+    <comp lib="3" loc="(460,370)" name="Comparator"/>
     <comp lib="5" loc="(660,550)" name="RGBLED"/>
     <wire from="(100,280)" to="(100,320)"/>
     <wire from="(100,280)" to="(610,280)"/>
