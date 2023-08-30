@@ -60,17 +60,22 @@
     <comp lib="3" loc="(290,400)" name="FPMultiplier"/>
     <comp lib="3" loc="(330,100)" name="BitFinder"/>
     <comp lib="3" loc="(360,250)" name="Adder"/>
+    <comp lib="3" loc="(380,250)" name="FPNegator"/>
+    <comp lib="3" loc="(400,180)" name="FPMultiplier"/>
     <comp lib="3" loc="(460,370)" name="Comparator"/>
     <comp lib="5" loc="(660,550)" name="RGBLED"/>
+    <comp lib="6" loc="(620,180)" name="7421"/>
     <wire from="(100,280)" to="(100,320)"/>
     <wire from="(100,280)" to="(610,280)"/>
     <wire from="(1140,190)" to="(1140,240)"/>
     <wire from="(140,240)" to="(140,290)"/>
-    <wire from="(140,240)" to="(610,240)"/>
+    <wire from="(140,240)" to="(320,240)"/>
+    <wire from="(320,240)" to="(610,240)"/>
     <wire from="(340,360)" to="(340,370)"/>
-    <wire from="(340,370)" to="(610,370)"/>
+    <wire from="(340,370)" to="(460,370)"/>
     <wire from="(410,420)" to="(410,550)"/>
     <wire from="(410,550)" to="(610,550)"/>
+    <wire from="(460,370)" to="(610,370)"/>
     <wire from="(570,590)" to="(650,590)"/>
     <wire from="(610,240)" to="(1140,240)"/>
     <wire from="(610,240)" to="(610,280)"/>
