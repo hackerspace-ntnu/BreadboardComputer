@@ -64,7 +64,12 @@
     <comp lib="3" loc="(400,180)" name="FPMultiplier"/>
     <comp lib="3" loc="(460,370)" name="Comparator"/>
     <comp lib="5" loc="(660,550)" name="RGBLED"/>
+    <comp lib="6" loc="(130,480)" name="7430"/>
+    <comp lib="6" loc="(350,70)" name="7421"/>
+    <comp lib="6" loc="(370,540)" name="7411"/>
+    <comp lib="6" loc="(610,180)" name="7411"/>
     <comp lib="6" loc="(620,180)" name="7421"/>
+    <comp lib="6" loc="(70,630)" name="7421"/>
     <wire from="(100,280)" to="(100,320)"/>
     <wire from="(100,280)" to="(610,280)"/>
     <wire from="(1140,190)" to="(1140,240)"/>
