@@ -3,7 +3,7 @@
 
 Velkommen!
 
-Før gruppa møtes for første gang `dag/dato` ønsker vi at alle leser gjennom denne guiden. Du trenger _ikke_ forstå alt, men bare det å lese gjennom den og la innholdet synke litt inn (ikke les den rett før møtet), vil hjelpe mye når vi begynner opplæringen!
+Før gruppa møtes for første gang `dag/dato` ønsker vi at alle leser gjennom denne guiden. **Du trenger ikke forstå alt**, men bare det å lese gjennom den og la innholdet synke litt inn (ikke les den rett før møtet), vil hjelpe mye når vi begynner opplæringen!
 
 Guiden inneholder følgende:
 - Hva er en datamaskin?
@@ -11,7 +11,7 @@ Guiden inneholder følgende:
 - Hva er en CPU?
 - Hva er et program?
 - CPU-ens _Fetch-Decode-Execute_-syklus
-- Én klokkesyklus
+- CPU-ens oppbygning
 
 ## Hva er en datamaskin?
 
@@ -98,7 +98,15 @@ Nå har vi funnet ut hva instruksjonen gjør. Da kan vi faktisk utføre den. Hvi
 
 Når dette steget er fullført, vil Program Counteren økes fra 0 til 1, og syklusen begynner på nytt igjen. Det betyr at CPU-en henter instruksjonen med adresse 1, det vil si 1100, og dekoder og utfører den. Denne prosessen skjer om og om igjen.
 
-## 
+## Litt om registre
 
-## Én klokkesyklus
+Til nå har vi nevnt to registre:
+- Program Counter (PC), som holder styr på hvor i programmet vi er
+- Instruction Register (IR), som holder styr på hvilken instruksjon vi utfører
+
+Det som er felles for alle registre, er at de er som bittemså minnebrikker. Men til forskjell fra RAM, har ikke registre noen adresser – de kan kun huske én ting om gangen.
+
+CPU-er inneholder mange registre. Noen av disse er generelle og brukes til mange formål, mens andre er spesielle og brukes til noen få, helt konkrete oppgaver. Passende nok kalles de to kategoriene henholdsvis _general purpose_- og _special purpose_-registre.
+
+### Generelle registre
 
