@@ -104,9 +104,7 @@ Til nå har vi nevnt to registre:
 - Program Counter (PC), som holder styr på hvor i programmet vi er
 - Instruction Register (IR), som holder styr på hvilken instruksjon vi utfører
 
-Det som er felles for alle registre, er at de er som bittemså minnebrikker. Men til forskjell fra RAM, har ikke registre noen adresser – de kan kun huske én ting om gangen.
+CPU-er inneholder mange registre. Noen av disse er generelle og brukes til mange formål, mens andre er spesielle og brukes til noen få, helt konkrete oppgaver. Passende nok kalles de to kategoriene henholdsvis _general purpose_- og _special purpose_-registre. PC og IR er eksempler på _special purpose_-registre.
 
-CPU-er inneholder mange registre. Noen av disse er generelle og brukes til mange formål, mens andre er spesielle og brukes til noen få, helt konkrete oppgaver. Passende nok kalles de to kategoriene henholdsvis _general purpose_- og _special purpose_-registre.
-
-### Generelle registre
+Mer generelle registre kalles ofte for eksempel r0, r1, r2, osv. Som vi snakket om tidligere, kan CPU-en addere tall. De to tallene som adderes, ligger lagret i slike registre internt i CPU-en. Resultatet av addisjonen skrives også til et register. Instruksjonen 1100 som vi nevnte ovenfor, kan for eksempel bety "adder tallene i r2 og r5, og skriv resultatet til r1". 
 
