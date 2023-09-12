@@ -22,18 +22,15 @@ I sin enkleste form består en datamaskin av to deler:
 De fleste datamaskiner har også f.eks. nettverkskort, tastatur, skjerm, harddisker osv., men disse delene skal vi ikke fokusere på her.
 
 ## Hva er RAM?
-`NB: Oppdater intro-avsnittet her: Har ikke snakket om CPU-en i særlig grad enda.`
-RAM er minnet til datamaskinen. Instruksjonene (programmet) som CPU-en kjører, ligger lagret i RAM.
+RAM er minnet til datamaskinen. Når du kjører et program på en datamaskin, ligger det lagret i RAM.
 
-RAM heter "Random Access Memory" fordi vi kan få tilgang på dataen i en hvilken som helst rekkefølge.
-
-Vi kan se på RAM som én kjempestor tabell. I venstre kolonne har vi _adresser_ i stigende rekkefølge. I høyre kolonne ser vi _dataene_ som er lagret på hver adresse. 
+Vi kan se på RAM som én kjempestor tabell. I venstre kolonne har vi _adresser_ i stigende rekkefølge. I høyre kolonne ser vi _dataene_ som er lagret på hver adresse. Grunnen til at RAM heter "Random Access Memory", er at vi kan få tilgang på dataen i en hvilken som helst rekkefølge.
 
 RAM støtter som regel to grunnleggende operasjoner:
 - Du kan be om å få _lese_ et tall på en bestemt adresse. Det vil si at du gir RAM en adresse, og får tilbake dataene der.
 - Du kan _skrive_ over et tall på en bestemt adresse. Det vil si at du gir RAM en adresse og litt data, og forteller at du vil skrive over hva enn som var der tidligere, med den nye dataen.
 
-En slik RAM-tabell kan for eksempel se slik ut:
+En RAM-tabell kan for eksempel se slik ut (legg merke til at adressene ofte begynner på 0 i stedet for 1):
 
 |   Adresse     |   Data
 |:-------------:|:---------:
@@ -56,6 +53,8 @@ La oss si at vi nå spør RAM-brikken hva som ligger i adresse 2 (vi _leser_ adr
 CPU-en kalles ofte "hjernen" til datamaskinen. Man kan godt se på det sånn, bortsett fra at mestparten av minnet altså ligger i RAM (se ovenfor). CPU-en kalles ofte hjernen til datamaskinen, fordi:
 - Den utfører matematiske operasjoner, f.eks. addisjon
 - Den bestemmer over resten av maskinen, og sender f.eks. signaler til RAM om skriving/lesing når det trengs
+
+NB! Herfra begynner det å bli litt teknisk, så ta det i saaaaaaakte tempo :D
 
 ## Hva er et program?
 
@@ -106,5 +105,5 @@ Til nå har vi nevnt to registre:
 
 CPU-er inneholder mange registre. Noen av disse er generelle og brukes til mange formål, mens andre er spesielle og brukes til noen få, helt konkrete oppgaver. Passende nok kalles de to kategoriene henholdsvis _general purpose_- og _special purpose_-registre. PC og IR er eksempler på _special purpose_-registre.
 
-Mer generelle registre kalles ofte for eksempel r0, r1, r2, osv. Som vi snakket om tidligere, kan CPU-en addere tall. De to tallene som adderes, ligger lagret i slike registre internt i CPU-en. Resultatet av addisjonen skrives også til et register. Instruksjonen 1100 som vi nevnte ovenfor, kan for eksempel bety "adder tallene i r2 og r5, og skriv resultatet til r1". 
+Mer generelle registre kalles ofte for eksempel r0, r1, r2, osv. Som vi snakket om tidligere, kan CPU-en addere tall. De to tallene som adderes, ligger lagret i slike registre internt i CPU-en. Resultatet av addisjonen skrives også til et register. Instruksjonen 0010 som vi nevnte ovenfor, kan for eksempel bety "adder tallene i r2 og r5, og skriv resultatet til r1". 
 
