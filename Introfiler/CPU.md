@@ -3,8 +3,6 @@
 
 Velkommen!
 
-Før gruppa møtes for første gang `dag/dato` ønsker vi at alle leser gjennom denne guiden. **Du trenger ikke forstå alt**, men bare det å lese gjennom den og la innholdet synke litt inn (ikke les den rett før møtet), vil hjelpe mye når vi begynner opplæringen!
-
 Guiden inneholder følgende:
 - Hva er en datamaskin?
 - Hva er RAM?
@@ -22,7 +20,7 @@ I sin enkleste form består en datamaskin av to deler:
 De fleste datamaskiner har også f.eks. nettverkskort, tastatur, skjerm, harddisker osv., men disse delene skal vi ikke fokusere på her.
 
 ## Hva er RAM?
-RAM er minnet til datamaskinen. Når du kjører et program på en datamaskin, ligger det lagret i RAM.
+RAM er minnet til datamaskinen. Alt det CPU-en trenger å huske mens den kjører et program, ligger lagret i RAM.
 
 Vi kan se på RAM som én kjempestor tabell. I venstre kolonne har vi _adresser_ i stigende rekkefølge. I høyre kolonne ser vi _dataene_ som er lagret på hver adresse. Grunnen til at RAM heter "Random Access Memory", er at vi kan få tilgang på dataen i en hvilken som helst rekkefølge.
 
