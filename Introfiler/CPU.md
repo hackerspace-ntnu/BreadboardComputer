@@ -9,7 +9,7 @@ Guiden inneholder følgende:
 - Hva er en CPU?
 - Hva er et program?
 - CPU-ens _Fetch-Decode-Execute_-syklus
-- CPU-ens oppbygning
+- Registre
 
 ## Hva er en datamaskin?
 
