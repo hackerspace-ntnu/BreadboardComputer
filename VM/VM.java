@@ -1,6 +1,3 @@
-
-// Hei
-
 public class VM {
     
     private final static int addressBound = 65536;
