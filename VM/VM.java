@@ -1,7 +1,3 @@
-
-/**
- * The VM (Virtual Machine) class is used to emulate programs written for the physical CPU. 
- */
 public class VM {
     
     /**
