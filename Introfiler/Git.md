@@ -1,6 +1,7 @@
-git clone <https://github.com/hackerspace-ntnu/BreadboardComputer.git>
+# GIT
 
-git checkout -b branchnavn              e.g feature-vmclock, bugfix-vmclock
+git pull
+git checkout -b branchnavn e.g feature-vmclock, bugfix-vmclock
 git add -A
 git commit -m "melding"
 git push
