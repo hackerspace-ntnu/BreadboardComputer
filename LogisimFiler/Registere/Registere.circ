@@ -69,9 +69,22 @@
       <a name="label" val="ID"/>
       <a name="width" val="16"/>
     </comp>
-    <comp lib="0" loc="(1120,850)" name="Tunnel">
+    <comp lib="0" loc="(1170,760)" name="Tunnel">
+      <a name="facing" val="east"/>
+      <a name="label" val="LOADPC"/>
+    </comp>
+    <comp lib="0" loc="(1170,820)" name="Tunnel">
+      <a name="facing" val="east"/>
+      <a name="label" val="COUNTDIR"/>
+    </comp>
+    <comp lib="0" loc="(1170,870)" name="Tunnel">
       <a name="facing" val="east"/>
       <a name="label" val="CLK"/>
+    </comp>
+    <comp lib="0" loc="(1240,880)" name="Tunnel">
+      <a name="facing" val="east"/>
+      <a name="label" val="IMPC"/>
+      <a name="width" val="16"/>
     </comp>
     <comp lib="0" loc="(1570,750)" name="Tunnel">
       <a name="facing" val="south"/>
@@ -115,6 +128,10 @@
     <comp lib="0" loc="(190,900)" name="Tunnel">
       <a name="facing" val="east"/>
       <a name="label" val="WD"/>
+    </comp>
+    <comp lib="0" loc="(1910,580)" name="Tunnel">
+      <a name="label" val="RAM"/>
+      <a name="width" val="16"/>
     </comp>
     <comp lib="0" loc="(1940,340)" name="Tunnel">
       <a name="facing" val="east"/>
@@ -336,8 +353,14 @@
     <wire from="(1020,210)" to="(1020,230)"/>
     <wire from="(1020,260)" to="(1020,270)"/>
     <wire from="(1040,290)" to="(1120,290)"/>
-    <wire from="(1120,850)" to="(1290,850)"/>
-    <wire from="(1130,800)" to="(1290,800)"/>
+    <wire from="(1170,760)" to="(1180,760)"/>
+    <wire from="(1170,820)" to="(1290,820)"/>
+    <wire from="(1170,870)" to="(1180,870)"/>
+    <wire from="(1180,760)" to="(1180,800)"/>
+    <wire from="(1180,800)" to="(1290,800)"/>
+    <wire from="(1180,850)" to="(1180,870)"/>
+    <wire from="(1180,850)" to="(1290,850)"/>
+    <wire from="(1240,880)" to="(1290,880)"/>
     <wire from="(1490,1180)" to="(1500,1180)"/>
     <wire from="(1490,870)" to="(1490,880)"/>
     <wire from="(1490,870)" to="(1550,870)"/>
@@ -348,8 +371,10 @@
     <wire from="(170,20)" to="(180,20)"/>
     <wire from="(1840,240)" to="(1840,480)"/>
     <wire from="(1840,240)" to="(2000,240)"/>
-    <wire from="(1840,480)" to="(1840,870)"/>
+    <wire from="(1840,480)" to="(1840,580)"/>
     <wire from="(1840,480)" to="(2330,480)"/>
+    <wire from="(1840,580)" to="(1840,870)"/>
+    <wire from="(1840,580)" to="(1910,580)"/>
     <wire from="(1840,70)" to="(1840,240)"/>
     <wire from="(1840,870)" to="(1840,1270)"/>
     <wire from="(190,350)" to="(250,350)"/>
