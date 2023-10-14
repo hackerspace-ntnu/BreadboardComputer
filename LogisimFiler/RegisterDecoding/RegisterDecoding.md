@@ -39,3 +39,22 @@ If we were to use the first approach (and allow any register combination), we wo
 This totals to 17 address bits. The issue is that EEPROMs this large are usually very expensive.
 
 Going with the second approach, we only need the first 3 + 5 = 8 bits, fitting well into the standard 13-bit EEPROMs. The remaining 9 bits are decoded in hardware. This decoding logic need not be very complicated (see the `.circ` file).
+
+## Overview of the register decoding logic
+
+The register decoder takes 12 inputs:
+- 1 bit from the instruction decoder (EEPROM) that says whether to enable source A
+- 1 bit from the instruction decoder (EEPROM) that says whether to enable source B
+- 1 bit from the instruction decoder (EEPROM) that says whether to load the destination
+- 3 bits fromt he instruction register (IR) that represent source A
+- 3 bits fromt he instruction register (IR) that represent source B
+- 3 bits fromt he instruction register (IR) that represent the destination
+
+It produces 16 outputs:
+- 8 bits for output enables (1 for each register) that are active-low
+- 8 bits for loading registers (1 for each register) that are active-high
+
+The circuit assumes that the instruction decoder **never** tries to enable source A and source B at the same time (this would short-circuit the CPU since multiple registers cannot output to the same bus simultanously).
+
+A register is enabled if that register's index (3 identifying bits) are active and the corrsponding source bit from the EEPROM is high.
+A register is loaded if that register's index (3 identifying bits) are active and the EEPROMs load bit is high.
