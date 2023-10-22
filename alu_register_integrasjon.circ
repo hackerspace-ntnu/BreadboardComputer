@@ -98,8 +98,31 @@
     <comp lib="0" loc="(220,150)" name="Pin">
       <a name="appearance" val="classic"/>
     </comp>
+    <comp lib="0" loc="(230,190)" name="Tunnel">
+      <a name="facing" val="east"/>
+      <a name="label" val="RI"/>
+    </comp>
     <comp lib="0" loc="(240,150)" name="Tunnel">
       <a name="label" val="RO"/>
+    </comp>
+    <comp lib="0" loc="(260,190)" name="Pin">
+      <a name="appearance" val="classic"/>
+    </comp>
+    <comp lib="0" loc="(400,170)" name="Pin">
+      <a name="appearance" val="classic"/>
+      <a name="width" val="16"/>
+    </comp>
+    <comp lib="0" loc="(420,120)" name="Pin">
+      <a name="appearance" val="classic"/>
+      <a name="width" val="16"/>
+    </comp>
+    <comp lib="0" loc="(420,170)" name="Tunnel">
+      <a name="label" val="ADRESSEBUSS"/>
+      <a name="width" val="16"/>
+    </comp>
+    <comp lib="0" loc="(440,120)" name="Tunnel">
+      <a name="label" val="DATABUSS"/>
+      <a name="width" val="16"/>
     </comp>
     <comp lib="0" loc="(530,330)" name="Tunnel">
       <a name="label" val="DATABUSSIN"/>
@@ -161,12 +184,12 @@
       <a name="width" val="16"/>
     </comp>
     <comp lib="4" loc="(230,240)" name="RAM">
-      <a name="addrWidth" val="16"/>
+      <a name="addrWidth" val="15"/>
       <a name="appearance" val="logisim_evolution"/>
       <a name="dataWidth" val="16"/>
       <a name="labelvisible" val="true"/>
     </comp>
-    <comp lib="8" loc="(1349,259)" name="Text">
+    <comp lib="8" loc="(1345,255)" name="Text">
       <a name="font" val="SansSerif bold 22"/>
       <a name="text" val="PINS som er på høyre side er outpus!!!"/>
     </comp>
@@ -185,7 +208,7 @@
     <wire from="(1090,130)" to="(1110,130)"/>
     <wire from="(1090,150)" to="(1150,150)"/>
     <wire from="(110,330)" to="(180,330)"/>
-    <wire from="(1130,130)" to="(1180,130)"/>
+    <wire from="(1130,130)" to="(1160,130)"/>
     <wire from="(150,310)" to="(210,310)"/>
     <wire from="(180,320)" to="(180,330)"/>
     <wire from="(180,320)" to="(220,320)"/>
@@ -199,7 +222,10 @@
     <wire from="(220,150)" to="(240,150)"/>
     <wire from="(220,310)" to="(220,320)"/>
     <wire from="(220,310)" to="(230,310)"/>
-    <wire from="(470,330)" to="(530,330)"/>
+    <wire from="(230,190)" to="(260,190)"/>
+    <wire from="(400,170)" to="(420,170)"/>
+    <wire from="(420,120)" to="(440,120)"/>
+    <wire from="(470,330)" to="(510,330)"/>
     <wire from="(60,70)" to="(80,70)"/>
     <wire from="(690,810)" to="(860,810)"/>
     <wire from="(790,190)" to="(870,190)"/>
@@ -248,15 +274,19 @@
       <a name="appearance" val="classic"/>
       <a name="label" val="CountE"/>
     </comp>
-    <comp lib="0" loc="(1180,880)" name="Pin">
-      <a name="appearance" val="classic"/>
-      <a name="label" val="CounterJump"/>
+    <comp lib="0" loc="(1180,880)" name="Tunnel">
+      <a name="facing" val="east"/>
+      <a name="label" val="DATABUSS"/>
       <a name="width" val="16"/>
     </comp>
     <comp lib="0" loc="(1200,530)" name="Tunnel">
       <a name="facing" val="east"/>
       <a name="label" val="DATABUSSIN"/>
       <a name="width" val="16"/>
+    </comp>
+    <comp lib="0" loc="(1210,770)" name="Pin">
+      <a name="appearance" val="classic"/>
+      <a name="label" val="JUMP"/>
     </comp>
     <comp lib="0" loc="(1270,590)" name="Tunnel">
       <a name="facing" val="east"/>
@@ -496,6 +526,9 @@
       <a name="facing" val="west"/>
       <a name="width" val="4"/>
     </comp>
+    <comp lib="1" loc="(1240,840)" name="AND Gate">
+      <a name="size" val="30"/>
+    </comp>
     <comp lib="1" loc="(1390,530)" name="Controlled Buffer">
       <a name="width" val="16"/>
     </comp>
@@ -573,21 +606,12 @@
     <comp lib="8" loc="(1070,1330)" name="Text">
       <a name="text" val="Sparer vi ikke sykluser på  å  loade direkte til databuss? Blir mindre komplisert, siden vi ikke har snakket om noe cashing"/>
     </comp>
-    <comp lib="8" loc="(1115,765)" name="Text">
-      <a name="text" val="??? Treng dette inputs i circen?"/>
-    </comp>
-    <comp lib="8" loc="(1311,628)" name="Text">
+    <comp lib="8" loc="(1310,625)" name="Text">
       <a name="font" val="SansSerif bold 21"/>
       <a name="text" val="Liten buffer siden det kommer feil når input pin er direkte koblet med en output pin"/>
     </comp>
     <comp lib="8" loc="(340,1285)" name="Text">
       <a name="text" val="Under constrution!!"/>
-    </comp>
-    <comp lib="8" loc="(700,375)" name="Text">
-      <a name="text" val="Hvorfor bruker denne WD?"/>
-    </comp>
-    <comp lib="8" loc="(890,410)" name="Text">
-      <a name="text" val="La ikke WD til som input i tilfelle dette funker annenleder fra de andre"/>
     </comp>
     <wire from="(1010,90)" to="(1040,90)"/>
     <wire from="(1020,120)" to="(1080,120)"/>
@@ -597,11 +621,19 @@
     <wire from="(1070,90)" to="(1120,90)"/>
     <wire from="(1080,120)" to="(1080,290)"/>
     <wire from="(1120,60)" to="(1120,90)"/>
-    <wire from="(1120,850)" to="(1290,850)"/>
-    <wire from="(1130,800)" to="(1290,800)"/>
+    <wire from="(1120,850)" to="(1210,850)"/>
+    <wire from="(1130,800)" to="(1180,800)"/>
+    <wire from="(1180,800)" to="(1180,840)"/>
+    <wire from="(1180,840)" to="(1210,840)"/>
     <wire from="(1180,880)" to="(1290,880)"/>
     <wire from="(1200,530)" to="(1290,530)"/>
+    <wire from="(1210,770)" to="(1230,770)"/>
+    <wire from="(1230,770)" to="(1230,800)"/>
+    <wire from="(1230,800)" to="(1290,800)"/>
+    <wire from="(1240,840)" to="(1270,840)"/>
     <wire from="(1270,590)" to="(1280,590)"/>
+    <wire from="(1270,840)" to="(1270,850)"/>
+    <wire from="(1270,850)" to="(1290,850)"/>
     <wire from="(1280,490)" to="(1280,540)"/>
     <wire from="(1280,490)" to="(1380,490)"/>
     <wire from="(1280,540)" to="(1290,540)"/>
@@ -731,6 +763,7 @@
       <circ-port dir="in" pin="480,200" x="210" y="140"/>
       <circ-port dir="in" pin="830,660" x="250" y="140"/>
       <circ-port dir="in" pin="840,110" x="190" y="160"/>
+      <circ-port dir="in" pin="980,280" x="290" y="270"/>
       <circ-port dir="out" pin="1040,770" x="290" y="190"/>
       <circ-port dir="out" pin="1180,930" x="290" y="170"/>
       <circ-port dir="out" pin="500,580" x="290" y="230"/>
@@ -849,6 +882,11 @@
       <a name="label" val="cFlag"/>
       <a name="output" val="true"/>
     </comp>
+    <comp lib="0" loc="(980,280)" name="Pin">
+      <a name="appearance" val="classic"/>
+      <a name="facing" val="north"/>
+      <a name="width" val="2"/>
+    </comp>
     <comp lib="1" loc="(1180,890)" name="NOR Gate">
       <a name="facing" val="south"/>
       <a name="inputs" val="16"/>
@@ -905,6 +943,9 @@
     <comp lib="1" loc="(900,530)" name="AND Gate">
       <a name="facing" val="west"/>
     </comp>
+    <comp lib="2" loc="(1000,230)" name="Multiplexer">
+      <a name="select" val="2"/>
+    </comp>
     <comp lib="3" loc="(500,250)" name="Adder">
       <a name="width" val="16"/>
     </comp>
@@ -913,12 +954,16 @@
       <a name="trigger" val="falling"/>
       <a name="width" val="16"/>
     </comp>
-    <comp lib="8" loc="(1453,431)" name="Text">
+    <comp lib="8" loc="(1085,340)" name="Text">
+      <a name="text" val="Fjern and gates og bruk multiplex"/>
+    </comp>
+    <comp lib="8" loc="(1450,430)" name="Text">
       <a name="text" val="Dette er logikk som skal passe på at output ikke blir error"/>
     </comp>
     <comp lib="8" loc="(595,535)" name="Text">
       <a name="text" val="Even flag kan slettes om den ikke trengs"/>
     </comp>
+    <wire from="(1000,230)" to="(1150,230)"/>
     <wire from="(1030,390)" to="(1030,420)"/>
     <wire from="(1030,390)" to="(1040,390)"/>
     <wire from="(1030,420)" to="(1030,430)"/>
@@ -1072,6 +1117,7 @@
     <wire from="(950,490)" to="(990,490)"/>
     <wire from="(950,510)" to="(980,510)"/>
     <wire from="(950,550)" to="(980,550)"/>
+    <wire from="(980,250)" to="(980,280)"/>
     <wire from="(980,360)" to="(1020,360)"/>
     <wire from="(980,360)" to="(980,390)"/>
     <wire from="(980,390)" to="(980,450)"/>
@@ -1090,54 +1136,54 @@
       <a name="facing" val="south"/>
       <a name="fanout" val="10"/>
       <a name="incoming" val="10"/>
-      <a name="spacing" val="3"/>
+      <a name="spacing" val="5"/>
     </comp>
     <comp lib="0" loc="(1040,320)" name="Pin">
       <a name="appearance" val="classic"/>
       <a name="facing" val="north"/>
       <a name="label" val="SumO"/>
     </comp>
-    <comp lib="0" loc="(1070,320)" name="Pin">
+    <comp lib="0" loc="(1090,320)" name="Pin">
       <a name="appearance" val="classic"/>
       <a name="facing" val="north"/>
-      <a name="label" val="CountJump"/>
+      <a name="label" val="Jump"/>
     </comp>
-    <comp lib="0" loc="(1100,320)" name="Pin">
+    <comp lib="0" loc="(1140,320)" name="Pin">
       <a name="appearance" val="classic"/>
       <a name="facing" val="north"/>
       <a name="label" val="CountO"/>
     </comp>
-    <comp lib="0" loc="(1130,320)" name="Pin">
+    <comp lib="0" loc="(1190,320)" name="Pin">
       <a name="appearance" val="classic"/>
       <a name="facing" val="north"/>
       <a name="label" val="CountE"/>
     </comp>
-    <comp lib="0" loc="(1160,320)" name="Pin">
+    <comp lib="0" loc="(1240,320)" name="Pin">
       <a name="appearance" val="classic"/>
       <a name="facing" val="north"/>
       <a name="label" val="BW"/>
     </comp>
-    <comp lib="0" loc="(1190,320)" name="Pin">
+    <comp lib="0" loc="(1290,320)" name="Pin">
       <a name="appearance" val="classic"/>
       <a name="facing" val="north"/>
       <a name="label" val="BO"/>
     </comp>
-    <comp lib="0" loc="(1220,320)" name="Pin">
+    <comp lib="0" loc="(1340,320)" name="Pin">
       <a name="appearance" val="classic"/>
       <a name="facing" val="north"/>
       <a name="label" val="IRW"/>
     </comp>
-    <comp lib="0" loc="(1250,320)" name="Pin">
+    <comp lib="0" loc="(1390,320)" name="Pin">
       <a name="appearance" val="classic"/>
       <a name="facing" val="north"/>
       <a name="label" val="IRO"/>
     </comp>
-    <comp lib="0" loc="(1280,320)" name="Pin">
+    <comp lib="0" loc="(1440,320)" name="Pin">
       <a name="appearance" val="classic"/>
       <a name="facing" val="north"/>
       <a name="label" val="AW"/>
     </comp>
-    <comp lib="0" loc="(1310,320)" name="Pin">
+    <comp lib="0" loc="(1490,320)" name="Pin">
       <a name="appearance" val="classic"/>
       <a name="facing" val="north"/>
       <a name="label" val="AO"/>
