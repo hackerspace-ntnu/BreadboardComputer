@@ -1,7 +1,7 @@
 # This file specifies naming conventions
 
 Clock -                         '*CLK*'\
-Register clock -                '*CLK*'
+Register clock -                '*CLK*'\
 Registers -                     'R*0*', 'R*1*', 'R*2*', 'R*3*'\
 Stack Pointer Register -        '*SP*' (Fysisk identisk, unngå å kalle R7)
 
