@@ -9,4 +9,4 @@ with open('_targets/out.bbx', 'r',) as file:
 
 text = str(cpparray) + "}"
 
-pyperclip.copy(text)
+#pyperclip.copy(text) Kopierer til clipboard
