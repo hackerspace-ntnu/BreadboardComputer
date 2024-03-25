@@ -1,0 +1,10 @@
+
+import Stdlib;
+
+func main() -> int {
+    
+    call print("Test\n");
+    
+    return 0;
+    
+}
