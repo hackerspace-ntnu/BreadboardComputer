@@ -1,29 +1,42 @@
 //Mikroinstruksjoner
+//jump 3 bits
 const unsigned int j = 0x0001;   // Binary: 0000 0000 0000 0001
 const unsigned int jn = 0x0002;  // Binary: 0000 0000 0000 0010
 const unsigned int jz = 0x0003;  // Binary: 0000 0000 0000 0011
 const unsigned int jc = 0x0004;  // Binary: 0000 0000 0000 0100
 const unsigned int jnz = 0x0005; // Binary: 0000 0000 0000 0101
+//alu 2 bits
 const unsigned int add = 0x0000;    // Binary: 0000 0000 0000 0000
 const unsigned int xorr = 0x0008;    // Binary: 0000 0000 0000 1000
 const unsigned int nand = 0x0010;   // Binary: 0000 0000 0001 0000
 const unsigned int shiftr = 0x0018; // Binary: 0000 0000 0001 1000
-const unsigned int ramout = 0x0020; // Binary: 0000 0000 0010 0000
-const unsigned int pcout = 0x0040;  // Binary: 0000 0000 0100 0000
-const unsigned int srca = 0x0060;   // Binary: 0000 0000 0110 0000
-const unsigned int srcb = 0x0080;   // Binary: 0000 0000 1000 0000
-const unsigned int aluout = 0x00A0; // Binary: 0000 0000 1010 0000
-const unsigned int zero = 0x00E0;   // Binary: 0000 0000 1110 0000
-const unsigned int one = 0x0100;    // Binary: 0000 0001 0000 0000
-const unsigned int fullf = 0x0120;  // Binary: 0000 0001 0010 0000
-const unsigned int destin = 0x0200; // Binary: 0000 0010 0000 0000
-const unsigned int aluin = 0x0400;  // Binary: 0000 0100 0000 0000
-const unsigned int alu = 0x0600;  // Binary: 0000 0110 0000 0000   setter LE på aluout og flagg register
-const unsigned int irin = 0x0800;   // Binary: 0000 1000 0000 0000
-const unsigned int ramin = 0x0A00;  // Binary: 0000 1010 0000 0000
-const unsigned int marin = 0x0E00;    // Binary: 0000 1110 0000 0000
-const unsigned int pce = 0x1000;    // Binary: 0001 0000 0000 0000 //øker pc med 1
-const unsigned int reset = 0x2000; // Binary: 0010 0000 0000 0000
+
+
+//output 3 bits //hvis man vil outputte 0 kan man outputte zero trust fr fr on god no cap
+const unsigned int ramout = 0x0000; // Binary: 0000 0000 0000 0000
+const unsigned int pcout = 0x0020;  // Binary: 0000 0000 0010 0000
+const unsigned int srca = 0x0040;   // Binary: 0000 0000 0100 0000
+const unsigned int srcb = 0x0060;   // Binary: 0000 0000 0110 0000
+const unsigned int aluout = 0x0080; // Binary: 0000 0000 1000 0000
+
+const unsigned int zero = 0x00A0; // Binary: 0000 0000 1010 0000
+const unsigned int one = 0x00C0; // Binary: 0000 0000 1100 0000
+const unsigned int fullf = 0x00E0; //Binary: 0000 0000 1110 0000
+
+
+//input 3 bits
+const unsigned int destin = 0x0100; // Binary: 0000 0001 0000 0000
+const unsigned int aluin = 0x0200;  // Binary: 0000 0010 0000 0000
+//alu er write til alu resultat registeret.
+const unsigned int alu = 0x0300;  // Binary: 0000 0011 0000 0000   setter LE på aluout og flagg register
+const unsigned int irin = 0x0400;   // Binary: 0000 0100 0000 0000
+const unsigned int ramin = 0x0500;  // Binary: 0000 0101 0000 0000
+const unsigned int marin = 0x0600;    // Binary: 0000 0110 0000 0000
+
+//pce 1 bit
+const unsigned int pce = 0x0800;    // Binary: 0000 1000 0000 0000 //øker pc med 1
+//reset 1 bit
+const unsigned int reset = 0x1000; // Binary: 0001 0000 0000 0000
 
 //Instruksjoner
 const int nop[8] = {pcout|marin, ramout|irin|pce, reset, 0,0,0,0,0};
