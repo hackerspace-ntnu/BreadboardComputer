@@ -75,7 +75,7 @@ void loop()
     {
         digitalWrite(lightPin, LOW);
         standardDelay = 30;
-        for (int i; i < 32768; i++)
+        for (int i = 0; i < 32768; i++)
         {
             write(i, data[i]);
         }
