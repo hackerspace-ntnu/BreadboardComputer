@@ -1,4 +1,6 @@
+#include <stdlib.h>
 #include <stdio.h>
+#include "assembler.c"
 
 unsigned int data[32768] = {};
 
@@ -10,6 +12,53 @@ const int lightPin = 8; // når lyser - er klar til å skrive flere instruksjone
 const int wePin = 52;   // Write enable pin
 
 int standardDelay = 200;
+
+#define antallInstruksjoner 21
+
+const unsigned int nop = 0x00;     // 0000 0000
+const unsigned int mv = 0x01;      // 0000 0001
+const unsigned int li = 0x02;      // 0000 0010
+const unsigned int ld = 0x03;      // 0000 0011
+const unsigned int ldind = 0x04;   // 0000 0100
+const unsigned int ldio = 0x05;    // 0000 0101
+const unsigned int stio = 0x06;    // 0000 0110
+const unsigned int add = 0x07;     // 0000 0111
+const unsigned int sub = 0x08;     // 0000 1000 brukes ikke
+const unsigned int neg = 0x09;     // 0000 1001
+const unsigned int xor = 0x0A;     // 0000 1010
+const unsigned int nand = 0x0B;    // 0000 1011
+const unsigned int and = 0x0C;     // 0000 1100
+const unsigned int or = 0x0D;      // 0000 1101
+const unsigned int not = 0x0E;     // 0000 1110
+const unsigned int jump = 0x0F;    // 0000 1111
+const unsigned int jumpnz = 0x10;  // 0001 0000
+const unsigned int jumpimm = 0x11; // 0001 0001
+const unsigned int addimm = 0x12;  // 0001 0010
+const unsigned int store = 0x13;   // 0001 0011
+const unsigned int jumpz = 0x14;   // 0001 0100
+
+const unsigned int r0 = 0x0; // 0000
+const unsigned int r1 = 0x1; // 0001
+const unsigned int r2 = 0x2; // 0010
+const unsigned int r3 = 0x3; // 0011
+const unsigned int r4 = 0x4; // 0100
+const unsigned int r5 = 0x5; // 0101
+const unsigned int r6 = 0x6; // 0110
+const unsigned int r7 = 0x7; // 0111
+
+(n(o(t | p) | eg | and) | 
+mv | l(i | d(| ind | io)) |
+ st(io | ore) |
+  and |
+   xor |
+    or |
+     jump(| imm | nz | z));
+
+const unsigned int instruksjoner[antallInstruksjoner] = {nop, mv, li, ld, ldind, ldio, stio, add, sub, neg, xor, nand, and, or, not, jump, jumpnz, jumpimm, addimm, store, jumpz};
+
+// Change to 1 to use the assembler, this will compile a assembly code text file,
+// endre!!!!!
+const int localUpload = 0;
 
 void setup()
 {
@@ -70,15 +119,25 @@ void write(int address, int data)
     delay(standardDelay);
 }
 
+void assembler()
+{
+}
+
 void loop()
 {
     {
-        digitalWrite(lightPin, LOW);
-        standardDelay = 30;
-        for (int i = 0; i < 32768; i++)
+        if (localUpload == 0)
         {
-            write(i, data[i]);
+            digitalWrite(lightPin, LOW);
+            standardDelay = 30;
+            for (int i = 0; i < 32768; i++)
+            {
+                write(i, data[i]);
+            }
+            digitalWrite(lightPin, HIGH);
         }
-        digitalWrite(lightPin, HIGH);
+        else
+        {
+        }
     }
 }
