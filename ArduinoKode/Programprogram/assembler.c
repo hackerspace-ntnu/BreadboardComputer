@@ -205,12 +205,12 @@ void handle_statement()
     else if (strncmp(lexeme_buffer, "jumpnz", 6) == 0)
     {
         printf("%s", intToString(jumpnz, 5));
-        get_registers(0, 16, 0);
+        get_registers(0, 16, 0); //ikke bruk
     }
     else if (strncmp(lexeme_buffer, "jumpimm", 7) == 0)
     {
         printf("%s", intToString(jumpimm, 5));
-        get_registers(0, 16, 0);
+        get_registers(0, 16, 0); //ikke bruk
     }
     else if (strncmp(lexeme_buffer, "addimm", 6) == 0)
     {
