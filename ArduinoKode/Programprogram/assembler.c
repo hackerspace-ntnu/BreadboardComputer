@@ -45,6 +45,7 @@ const unsigned int registers[8] = {0x0, 0x1, 0x2, 0x3, 0x4, 0x5, 0x6, 0x7};
 int transition_table[N_STATES][256];
 int state = 0;
 void get_registers();
+int fileNotEmpty = 0;
 
 // denne er feil, skal egt ikke være mer enn en bokstav i hver state
 // er litt ork å sette opp
@@ -133,8 +134,14 @@ char *intToString(unsigned int integer, int length)
 // viktig å matche registerene med den som blir brukt i mikroinstruksjonene
 void handle_statement()
 {
-    char *h = "hellp";
-    printf("%s", h);
+    if (fileNotEmpty)
+    {
+        printf("\n");
+    }
+    else
+    {
+        fileNotEmpty = 1;
+    }
     if (strncmp(lexeme_buffer, "nop", 3) == 0)
     {
         printf("%s", intToString(nop, 5));
@@ -170,11 +177,6 @@ void handle_statement()
         printf("%s", intToString(stio, 5));
         get_registers(3, 3, 16);
     }
-    else if (strncmp(lexeme_buffer, "add", 3) == 0)
-    {
-        printf("%s", intToString(add, 5));
-        get_registers(3, 3, 3);
-    }
     else if (strncmp(lexeme_buffer, "neg", 3) == 0)
     {
         printf("%s", intToString(neg, 5));
@@ -190,14 +192,6 @@ void handle_statement()
         printf("%s", intToString(nand, 5));
         get_registers(3, 3, 3);
     }
-    else if (strncmp(lexeme_buffer, "and", 3) == 0)
-    {
-        char *str = intToString(and, 5);
-        printf("%s", str);
-        printf("hello");
-        free(str);
-        get_registers(3, 3, 3);
-    }
     else if (strncmp(lexeme_buffer, "or", 2) == 0)
     {
         printf("%s", intToString(or, 5));
@@ -207,11 +201,6 @@ void handle_statement()
     {
         printf("%s", intToString(not, 5));
         get_registers(3, 3, 0);
-    }
-    else if (strncmp(lexeme_buffer, "jump", 4) == 0)
-    {
-        printf("%s", intToString(jump, 5));
-        get_registers(0, 3, 0);
     }
     else if (strncmp(lexeme_buffer, "jumpnz", 6) == 0)
     {
@@ -225,8 +214,24 @@ void handle_statement()
     }
     else if (strncmp(lexeme_buffer, "addimm", 6) == 0)
     {
-        printf("%s", intToString(addimm, 5));
+        char *str = intToString(addimm, 5);
+        printf("%s", str);
+        free(str);
         get_registers(3, 3, 16);
+    }
+    else if (strncmp(lexeme_buffer, "add", 3) == 0)
+    {
+        char *str = intToString(add, 5);
+        printf("%s", str);
+        free(str);
+        get_registers(3, 3, 3);
+    }
+    else if (strncmp(lexeme_buffer, "and", 3) == 0)
+    {
+        char *str = intToString(and, 5);
+        printf("%s", str);
+        free(str);
+        get_registers(3, 3, 3);
     }
     else if (strncmp(lexeme_buffer, "store", 5) == 0)
     {
@@ -238,6 +243,11 @@ void handle_statement()
         printf("%s", intToString(jumpz, 5));
         get_registers(0, 3, 0);
     }
+    else if (strncmp(lexeme_buffer, "jump", 4) == 0)
+    {
+        printf("%s", intToString(jump, 5));
+        get_registers(0, 3, 0);
+    }
     else
     {
         printf("Unknown instruction: %s\n", lexeme_buffer);
@@ -246,38 +256,43 @@ void handle_statement()
 // 3 er register og 5 er immidiate
 void get_registers(int destin, int srca, int srcb)
 {
+    int finished = 0;
     int read;
     int length = destin + srca + srcb;
     char *rbuffer = (char *)malloc((length + 1) * sizeof(char));
     if (rbuffer == NULL)
     {
+        fprintf(stderr, "feil i mallocing");
         perror("Failed to allocate memory");
         exit(EXIT_FAILURE);
     }
-    int register_length = destin + srca + srcb;
+    int register_length = 0;
     while ((read = getchar()) != '\n')
     {
+        if (read == EOF)
+        {
+            finished = 1;
+            break;
+        }
         if (register_length > length)
         {
+
             exit(EXIT_FAILURE);
         }
         rbuffer[register_length++] = read;
-    }
-    for (int j = 0; j < register_length; j++)
-    {
-        printf("hello");
-        printf("%c", rbuffer[j]);
     }
     unsigned int rmask = 0x7;
     unsigned int imask = 0xFFFF;
     int active_destin = 0;
     int active_srca = 0;
     int imm_index = 4;
+    int index_offset = 4;
+    char convertToNum = '0';
     switch (destin)
     {
     case 3:
         active_destin = 1;
-        printf("%s", intToString(rmask & rbuffer[2], 3));
+        printf("%s", intToString(rmask & ((unsigned int)rbuffer[1] - convertToNum), 3)); // 1 er i index 1 og srca er i index 4
         break;
 
     case 0:
@@ -288,28 +303,48 @@ void get_registers(int destin, int srca, int srcb)
     {
     case 16:
         active_srca = 2;
+        imm_index = 0;
+
         if (active_destin)
         {
-            char *num;
-            while (rbuffer[imm_index] != ' ')
-            {
-                num[imm_index - 4] = rbuffer[imm_index];
-                imm_index++;
-            }
-            imm_index++;
-            unsigned int final;
-            for (int j = 0; j < sizeof(num) / sizeof(num[0]); j++)
-            {
-                final = final + (num[j] * ((imm_index - 4) * 10));
-            }
-            printf("%s", intToString(imask & final, 16));
+            imm_index = 3;
         }
+        char num[6] = {0};
+        fprintf(stderr, "Info dump; imm_index == %d\n", imm_index);
+        unsigned int final = 0; // Initialize final variable
+
+        int num_index = 0; // Index for the num array
+
+        // Extract the number from rbuffer (stop at space or null terminator)
+        while (rbuffer[imm_index] != ' ' && rbuffer[imm_index] != '\0')
+        {
+            num[num_index++] = rbuffer[imm_index];
+            fprintf(stderr, "rbuffer: %c, on index: %d\n", rbuffer[imm_index], imm_index);
+            imm_index++;
+        }
+        num[num_index] = '\0'; // Null-terminate the string
+
+        // Convert the extracted number string to an integer
+        final = (unsigned int)atoi(num);
+
+        // Print the extracted number and its value
+        fprintf(stderr, "Extracted number: %s\n", num);
+        fprintf(stderr, "Converted number: %u\n", final);
+
+        // Convert the number to binary and print the binary representation
+        fprintf(stderr, "Binary representation of %u: ", final);
+        for (int i = (sizeof(final) * 8) - 1; i >= 0; i--)
+        {
+            fprintf(stderr, "%u", (final >> i) & 1); // Print each bit
+        }
+        fprintf(stderr, "\n");
+        printf("%s", intToString(imask & final, 16));
         break;
 
     case 3:
         active_srca = 1;
-        printf("%s", intToString(rmask & rbuffer[4], 3));
-        imm_index = 7;
+        printf("%s", intToString(rmask & ((unsigned int)rbuffer[4] - convertToNum), 3));
+        imm_index = 6;
         break;
 
     case 0:
@@ -322,47 +357,71 @@ void get_registers(int destin, int srca, int srcb)
     case 16:
         if (active_destin == 1 && active_srca == 1)
         {
-            imm_index = 7;
-            char *num;
-            while (rbuffer[imm_index] != ' ')
+            imm_index = 6;
+            char num[6] = {0};
+            fprintf(stderr, "Info dump; imm_index == %d\n", imm_index);
+            unsigned int final = 0; // Initialize final variable
+
+            int num_index = 0; // Index for the num array
+
+            // Extract the number from rbuffer (stop at space or null terminator)
+            while (rbuffer[imm_index] != ' ' && rbuffer[imm_index] != '\0')
             {
-                num[imm_index - 4] = rbuffer[imm_index];
+                num[num_index++] = rbuffer[imm_index];
+                fprintf(stderr, "rbuffer: %c, on index: %d\n", rbuffer[imm_index], imm_index);
                 imm_index++;
             }
-            unsigned int final;
-            for (int j = 0; j < sizeof(num) / sizeof(num[0]); j++)
+            num[num_index] = '\0'; // Null-terminate the string
+
+            // Convert the extracted number string to an integer
+            final = (unsigned int)atoi(num);
+
+            // Print the extracted number and its value
+            fprintf(stderr, "Extracted number: %s\n", num);
+            fprintf(stderr, "Converted number: %u\n", final);
+
+            // Convert the number to binary and print the binary representation
+            fprintf(stderr, "Binary representation of %u: ", final);
+            for (int i = (sizeof(final) * 8) - 1; i >= 0; i--)
             {
-                final = final + (num[j] * ((imm_index - 4) * 10));
+                fprintf(stderr, "%u", (final >> i) & 1); // Print each bit
             }
-            printf("%s", intToString(imask & final, 16));
+            fprintf(stderr, "\n");
+            printf("000\n%s", intToString(imask & final, 16));
         }
         if (active_destin == 1 && active_srca == 2)
         {
             char *num;
-            while (rbuffer[imm_index] != ' ')
+            while (rbuffer[imm_index] != ' ' || rbuffer[imm_index] != EOF || rbuffer[imm_index] != '\n')
             {
-                num[imm_index - 4] = rbuffer[imm_index];
+                num[imm_index - index_offset] = rbuffer[imm_index];
                 imm_index++;
             }
-            imm_index++;
+            imm_index = 0;
             unsigned int final;
-            for (int j = 0; j < sizeof(num) / sizeof(num[0]); j++)
+            for (int j = 0; j < 5; j++)
             {
-                final = final + (num[j] * ((imm_index - 4) * 10));
+                final = final + (num[j] * ((imm_index - index_offset) * 10));
             }
-            printf("%s", intToString(imask & final, 16));
+            printf("%s\n", intToString(imask & final, 16));
+            printf("%s", intToString(0x0000, 16));
         }
         break;
 
     case 3:
-        printf("%s", intToString(rmask & rbuffer[imm_index], 3));
+        printf("%s\n", intToString(rmask & rbuffer[imm_index], 3));
+        printf("%s", intToString(0x0000, 16));
         break;
 
     case 0:
-        printf("%s", intToString(0x00, 3));
+        printf("%s\n", intToString(0x00, 3));
         break;
     }
     free(rbuffer);
+    if (finished)
+    {
+        return;
+    }
 }
 
 int main()
@@ -383,9 +442,13 @@ int main()
         {
         case ACCEPT:
             /* code */
-            if (getchar() != ' ')
+            read = getchar();
+            if (read != ' ' && read != EOF)
             {
-                state = 35;
+                lexeme_buffer[lexeme_length++] = read;
+                lexeme_buffer[lexeme_length] = 0;
+                state = transition_table[35][read];
+                break;
             }
             else
             {
@@ -396,7 +459,7 @@ int main()
             }
 
         case ERROR:
-            fprintf(stderr, "error: %d: unrecognized statement: %s /n", line_num, lexeme_buffer);
+            fprintf(stderr, "error: %d: unrecognized statement: %s, state: %d /n", line_num, lexeme_buffer, state);
             exit(EXIT_FAILURE);
         default:
             break;
