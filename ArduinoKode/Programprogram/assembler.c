@@ -146,108 +146,108 @@ void handle_statement()
     }
     if (strncmp(lexeme_buffer, "nop", 3) == 0)
     {
-        printf("%s", intToString(nop, 5));
+        printf("%s", intToString(nop, 7));
         get_registers(0, 0, 0);
     }
     else if (strncmp(lexeme_buffer, "mv", 2) == 0)
     {
-        printf("%s", intToString(mv, 5));
+        printf("%s", intToString(mv, 7));
         get_registers(3, 3, 0);
     }
     else if (strncmp(lexeme_buffer, "li", 2) == 0)
     {
-        printf("%s", intToString(li, 5));
+        printf("%s", intToString(li, 7));
         get_registers(3, 3, 16); // bruk samme srca som destin
     }
     else if (strncmp(lexeme_buffer, "ld", 2) == 0)
     {
-        printf("%s", intToString(ld, 5));
+        printf("%s", intToString(ld, 7));
         get_registers(3, 3, 16);
     }
     else if (strncmp(lexeme_buffer, "ldind", 5) == 0)
     {
-        printf("%s", intToString(ldind, 5));
+        printf("%s", intToString(ldind, 7));
         get_registers(3, 3, 0);
     }
     else if (strncmp(lexeme_buffer, "ldio", 4) == 0)
     {
-        printf("%s", intToString(ldio, 5));
+        printf("%s", intToString(ldio, 7));
         get_registers(3, 3, 16);
     }
     else if (strncmp(lexeme_buffer, "stio", 4) == 0)
     {
-        printf("%s", intToString(stio, 5));
+        printf("%s", intToString(stio, 7));
         get_registers(3, 3, 16);
     }
     else if (strncmp(lexeme_buffer, "neg", 3) == 0)
     {
-        printf("%s", intToString(neg, 5));
+        printf("%s", intToString(neg, 7));
         get_registers(3, 3, 0);
     }
     else if (strncmp(lexeme_buffer, "xor", 3) == 0)
     {
-        printf("%s", intToString(xor, 5));
+        printf("%s", intToString(xor, 7));
         get_registers(3, 3, 3);
     }
     else if (strncmp(lexeme_buffer, "nand", 4) == 0)
     {
-        printf("%s", intToString(nand, 5));
+        printf("%s", intToString(nand, 7));
         get_registers(3, 3, 3);
     }
     else if (strncmp(lexeme_buffer, "or", 2) == 0)
     {
-        printf("%s", intToString(or, 5));
+        printf("%s", intToString(or, 7));
         get_registers(3, 3, 3);
     }
     else if (strncmp(lexeme_buffer, "not", 3) == 0)
     {
-        printf("%s", intToString(not, 5));
+        printf("%s", intToString(not, 7));
         get_registers(3, 3, 0);
     }
     else if (strncmp(lexeme_buffer, "jumpnz", 6) == 0)
     {
-        printf("%s", intToString(jumpnz, 5));
+        printf("%s", intToString(jumpnz, 7));
         get_registers(0, 16, 0);
     }
     else if (strncmp(lexeme_buffer, "jumpimm", 7) == 0)
     {
-        printf("%s", intToString(jumpimm, 5));
+        printf("%s", intToString(jumpimm, 7));
         get_registers(0, 0, 16);
     }
     else if (strncmp(lexeme_buffer, "addimm", 6) == 0)
     {
-        char *str = intToString(addimm, 5);
+        char *str = intToString(addimm, 7);
         printf("%s", str);
         free(str);
         get_registers(3, 3, 16);
     }
     else if (strncmp(lexeme_buffer, "add", 3) == 0)
     {
-        char *str = intToString(add, 5);
+        char *str = intToString(add, 7);
         printf("%s", str);
         free(str);
         get_registers(3, 3, 3);
     }
     else if (strncmp(lexeme_buffer, "and", 3) == 0)
     {
-        char *str = intToString(and, 5);
+        char *str = intToString(and, 7);
         printf("%s", str);
         free(str);
         get_registers(3, 3, 3);
     }
     else if (strncmp(lexeme_buffer, "store", 5) == 0)
     {
-        printf("%s", intToString(store, 5));
+        printf("%s", intToString(store, 7));
         get_registers(0, 3, 3);
     }
     else if (strncmp(lexeme_buffer, "jumpz", 5) == 0)
     {
-        printf("%s", intToString(jumpz, 5));
+        printf("%s", intToString(jumpz, 7));
         get_registers(0, 3, 0);
     }
     else if (strncmp(lexeme_buffer, "jump", 4) == 0)
     {
-        printf("%s", intToString(jump, 5));
+        printf("%s", intToString(jump, 7));
         get_registers(0, 3, 0);
     }
     else
