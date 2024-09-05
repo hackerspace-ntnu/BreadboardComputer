@@ -205,7 +205,7 @@ void handle_statement()
     else if (strncmp(lexeme_buffer, "jumpnz", 6) == 0)
     {
         printf("%s", intToString(jumpnz, 5));
-        get_registers(0, 16, 0); //ikke bruk
+        get_registers(0, 3, 0);
     }
     else if (strncmp(lexeme_buffer, "jumpimm", 7) == 0)
     {
