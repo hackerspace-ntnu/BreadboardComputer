@@ -1,5 +1,7 @@
 // Linux command for å kjøre cat kode.txt | ./assembler > output.txt
 
+// li må ha samme srca som destin
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -155,7 +157,7 @@ void handle_statement()
     else if (strncmp(lexeme_buffer, "li", 2) == 0)
     {
         printf("%s", intToString(li, 5));
-        get_registers(3, 3, 16); // bruker samme srca som destin
+        get_registers(3, 3, 16); // bruk samme srca som destin
     }
     else if (strncmp(lexeme_buffer, "ld", 2) == 0)
     {
@@ -205,12 +207,12 @@ void handle_statement()
     else if (strncmp(lexeme_buffer, "jumpnz", 6) == 0)
     {
         printf("%s", intToString(jumpnz, 5));
-        get_registers(0, 3, 0);
+        get_registers(0, 16, 0);
     }
     else if (strncmp(lexeme_buffer, "jumpimm", 7) == 0)
     {
         printf("%s", intToString(jumpimm, 5));
-        get_registers(0, 16, 0); //ikke bruk
+        get_registers(0, 0, 16);
     }
     else if (strncmp(lexeme_buffer, "addimm", 6) == 0)
     {
@@ -404,7 +406,40 @@ void get_registers(int destin, int srca, int srcb)
                 final = final + (num[j] * ((imm_index - index_offset) * 10));
             }
             printf("%s\n", intToString(imask & final, 16));
-            printf("%s", intToString(0x0000, 16));
+        }
+        if (active_destin == 0 && active_srca == 0)
+        {
+            imm_index = 0;
+            char num[6] = {0};
+            fprintf(stderr, "Info dump; imm_index == %d\n", imm_index);
+            unsigned int final = 0; // Initialize final variable
+
+            int num_index = 0; // Index for the num array
+
+            // Extract the number from rbuffer (stop at space or null terminator)
+            while (rbuffer[imm_index] != ' ' && rbuffer[imm_index] != '\0')
+            {
+                num[num_index++] = rbuffer[imm_index];
+                fprintf(stderr, "rbuffer: %c, on index: %d\n", rbuffer[imm_index], imm_index);
+                imm_index++;
+            }
+            num[num_index] = '\0'; // Null-terminate the string
+
+            // Convert the extracted number string to an integer
+            final = (unsigned int)atoi(num);
+
+            // Print the extracted number and its value
+            fprintf(stderr, "Extracted number: %s\n", num);
+            fprintf(stderr, "Converted number: %u\n", final);
+
+            // Convert the number to binary and print the binary representation
+            fprintf(stderr, "Binary representation of %u: ", final);
+            for (int i = (sizeof(final) * 8) - 1; i >= 0; i--)
+            {
+                fprintf(stderr, "%u", (final >> i) & 1); // Print each bit
+            }
+            fprintf(stderr, "\n");
+            printf("000\n%s", intToString(imask & final, 16));
         }
         break;
 
