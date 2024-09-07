@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include "assembler.c"
 
-unsigned int data[32768] = {};
 
 const int addressBus[15] = {50, 48, 46, 44, 42, 40, 38, 36, 34, 32, 30, 28, 26, 24, 22};
 
@@ -25,11 +24,11 @@ const unsigned int stio = 0x06;    // 0000 0110
 const unsigned int add = 0x07;     // 0000 0111
 const unsigned int sub = 0x08;     // 0000 1000 brukes ikke
 const unsigned int neg = 0x09;     // 0000 1001
-const unsigned int xor = 0x0A;     // 0000 1010
+const unsigned int xorInst = 0x0A;     // 0000 1010
 const unsigned int nand = 0x0B;    // 0000 1011
-const unsigned int and = 0x0C;     // 0000 1100
-const unsigned int or = 0x0D;      // 0000 1101
-const unsigned int not = 0x0E;     // 0000 1110
+const unsigned int andInst = 0x0C;     // 0000 1100
+const unsigned int orInst = 0x0D;      // 0000 1101
+const unsigned int notInst = 0x0E;     // 0000 1110
 const unsigned int jump = 0x0F;    // 0000 1111
 const unsigned int jumpnz = 0x10;  // 0001 0000
 const unsigned int jumpimm = 0x11; // 0001 0001
@@ -46,15 +45,8 @@ const unsigned int r5 = 0x5; // 0101
 const unsigned int r6 = 0x6; // 0110
 const unsigned int r7 = 0x7; // 0111
 
-(n(o(t | p) | eg | and) | 
-mv | l(i | d(| ind | io)) |
- st(io | ore) |
-  and |
-   xor |
-    or |
-     jump(| imm | nz | z));
 
-const unsigned int instruksjoner[antallInstruksjoner] = {nop, mv, li, ld, ldind, ldio, stio, add, sub, neg, xor, nand, and, or, not, jump, jumpnz, jumpimm, addimm, store, jumpz};
+const unsigned int instruksjoner[antallInstruksjoner] = {nop, mv, li, ld, ldind, ldio, stio, add, sub, neg, xorInst, nand, andInst, orInst, notInst, jump, jumpnz, jumpimm, addimm, store, jumpz};
 
 // Change to 1 to use the assembler, this will compile a assembly code text file,
 // endre!!!!!

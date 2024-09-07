@@ -1,4 +1,4 @@
-// Linux command for å kjøre cat kode.txt | ./assembler > output.txt
+// Linux command for å kjøre gcc assembler.c -o assembler && cat kode.txt | ./assembler > output.txt
 
 // li må ha samme srca som destin
 
