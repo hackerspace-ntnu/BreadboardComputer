@@ -44,6 +44,7 @@ const unsigned int r5 = 0x5; // 0101
 const unsigned int r6 = 0x6; // 0110
 const unsigned int r7 = 0x7; // 0111
 
+const char* data[3500] = {"0001100001100010","0000010010010000","0000000000101010",};
 const unsigned int instruksjoner[antallInstruksjoner] = {nop, mv, li, ld, ldind, ldio, stio, add, sub, neg, xorInst, nand, andInst, orInst, notInst, jump, jumpnz, jumpimm, addimm, store, jumpz};
 
 const int localUpload = 0;
@@ -127,4 +128,3 @@ void loop()
     {
     }
 }
-"0001100"001","100","010",","0000010"010","010","0000000000101010",",
