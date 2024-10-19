@@ -1,130 +1,144 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include "assembler.c"
-
-const int addressBus[15] = {50, 48, 46, 44, 42, 40, 38, 36, 34, 32, 30, 28, 26, 24, 22};
-
-const int dataBus[16] = {53, 51, 49, 47, 45, 43, 41, 39, 37, 35, 33, 31, 29, 27, 25, 23}; // MINSTE SIGNIFICANT BIT FØRST
-
-const int lightPin = 8; // når lyser - er klar til å skrive flere instruksjoner
-const int wePin = 52;   // Write enable pin
-
-int standardDelay = 200;
-
-#define antallInstruksjoner 21
-
-const unsigned int nop = 0x00;     // 0000 0000
-const unsigned int mv = 0x01;      // 0000 0001
-const unsigned int li = 0x02;      // 0000 0010
-const unsigned int ld = 0x03;      // 0000 0011
-const unsigned int ldind = 0x04;   // 0000 0100
-const unsigned int ldio = 0x05;    // 0000 0101
-const unsigned int stio = 0x06;    // 0000 0110
-const unsigned int add = 0x07;     // 0000 0111
-const unsigned int sub = 0x08;     // 0000 1000 brukes ikke
-const unsigned int neg = 0x09;     // 0000 1001
-const unsigned int xorInst = 0x0A;     // 0000 1010
-const unsigned int nand = 0x0B;    // 0000 1011
-const unsigned int andInst = 0x0C;     // 0000 1100
-const unsigned int orInst = 0x0D;      // 0000 1101
-const unsigned int notInst = 0x0E;     // 0000 1110
-const unsigned int jump = 0x0F;    // 0000 1111
-const unsigned int jumpnz = 0x10;  // 0001 0000
-const unsigned int jumpimm = 0x11; // 0001 0001
-const unsigned int addimm = 0x12;  // 0001 0010
-const unsigned int store = 0x13;   // 0001 0011
-const unsigned int jumpz = 0x14;   // 0001 0100
-
-const unsigned int r0 = 0x0; // 0000
-const unsigned int r1 = 0x1; // 0001
-const unsigned int r2 = 0x2; // 0010
-const unsigned int r3 = 0x3; // 0011
-const unsigned int r4 = 0x4; // 0100
-const unsigned int r5 = 0x5; // 0101
-const unsigned int r6 = 0x6; // 0110
-const unsigned int r7 = 0x7; // 0111
-
-const char* data[3500] = {"0001100001100010","0000010010010000","0000000000101010",};
-const unsigned int instruksjoner[antallInstruksjoner] = {nop, mv, li, ld, ldind, ldio, stio, add, sub, neg, xorInst, nand, andInst, orInst, notInst, jump, jumpnz, jumpimm, addimm, store, jumpz};
-
-const int localUpload = 0;
-
+const int SER = 26;
+const int RCLK = 22;
+const int SCLK = 30;
+const int RedLED = A10;
+const int BlueLED = A12;
+const int GreenLED = A14;
+const int SlowPin = 34;
+const int MARIN = 38;
+const int RAMIN = 42;
+#define SetRed() setColor(255, 0, 0)
+#define SetGreen() setColor(0, 255, 0)
+#define SetYellow() setColor(255, 255, 0)
+const char *data[3500] = {
+"0000010000000000","0000001000000000","0000001001000000","0000001010001000","0010011000000000","0000011011010000","0000001000000000",};
+char* intToString(int integer, int length){
+  char* str = new char[length+1];
+  for(int i = length-1; i > -1; i--){
+    str[i] = (integer & 1) ? '1' : '0';
+    integer >>= 1;
+  }
+  str[length] = '\0';
+  return str;
+}
 void setup()
 {
     Serial.begin(9600);
-    pinMode(wePin, OUTPUT);
-    pinMode(lightPin, OUTPUT);
-
-    digitalWrite(lightPin, HIGH);
-    digitalWrite(wePin, HIGH);
-
-    for (int i = 0; i < 15; i++)
-    {
-        pinMode(addressBus[i], OUTPUT);
-        digitalWrite(addressBus[i], LOW);
-    }
-    for (int i = 0; i < 16; i++)
-    {
-        pinMode(dataBus[i], OUTPUT);
-        digitalWrite(dataBus[i], LOW);
-    }
-
+    pinMode(SER, OUTPUT);
+    pinMode(SCLK, OUTPUT);
+    pinMode(RCLK, OUTPUT);
+    pinMode(SlowPin, INPUT);
+    pinMode(RedLED, OUTPUT);
+    pinMode(BlueLED, OUTPUT);
+    pinMode(GreenLED, OUTPUT);
+    pinMode(MARIN, OUTPUT);
+    pinMode(RAMIN, OUTPUT);
+    digitalWrite(SER, LOW);
+    digitalWrite(SCLK, LOW);
+    digitalWrite(SCLK, LOW);
+    digitalWrite(MARIN, LOW);
+    digitalWrite(RAMIN, HIGH);
+    SetRed();
     Serial.print("Done setting up");
+    Handler(data);
+    SetGreen();
 }
-
-// Returnerer String med minst signifcant bit til venstre aka motsatt av vanlig.
-char *intToString(int integer, int length)
-{
-    char *str = new char[length + 1];
-    for (int i = 0; i < length; i++)
-    {
-        str[i] = (integer & 1) ? '1' : '0';
-        integer >>= 1;
-    }
-    str[length] = '\0';
-    return str;
+void MARINCycle(){
+  digitalWrite(MARIN, HIGH);
+  delay(10);
+  digitalWrite(MARIN, LOW);
 }
-
-// Skriver data til adresse
-void write(int address, int data)
+void RAMINCycle(){
+  digitalWrite(MARIN, LOW);
+  delay(10);
+  digitalWrite(MARIN, HIGH);
+}
+void setColor(int redValue, int greenValue, int blueValue) {
+  analogWrite(RedLED, redValue);
+  analogWrite(GreenLED, greenValue);
+  analogWrite(BlueLED, blueValue);
+}
+void SR_writeAddress(char *str)
 {
-    char *bitAddr = intToString(address, 15);
-    char *bitData = intToString(data, 16);
-    for (int i = 0; i < 15; i++)
-    {
-        digitalWrite(addressBus[i], bitAddr[i] == '1' ? HIGH : LOW);
-    }
+    word strToWord = 0;
     for (int i = 0; i < 16; i++)
     {
-        digitalWrite(dataBus[i], bitData[i] == '1' ? HIGH : LOW);
+        strToWord = (strToWord << 1) | (str[i] - '0');
     }
-    // Lagrer informasjonen
-    digitalWrite(wePin, LOW);
-    delay(50);
-    digitalWrite(wePin, HIGH);
-
-    delete[] bitAddr;
-    delete[] bitData;
-    delay(standardDelay);
+    uint8_t counter;
+    word shiftVal;
+    for (counter = 0; counter < 16; counter++)
+    {
+        shiftVal = (strToWord & 0x01);
+        digitalWrite(SER, shiftVal);
+        digitalWrite(SCLK, HIGH);
+        delay(10);
+        digitalWrite(SCLK, LOW);
+        delay(10);
+        strToWord = strToWord >> 1;
+    }
+    digitalWrite(RCLK, HIGH);
+    delay(10);
+    digitalWrite(RCLK, LOW);
+    Serial.println("Shift register latched");
+    SetYellow();
+    while(digitalRead(SlowPin) == 0){
+      delay(100);
+    }
+    SetRed();
 }
-
-void assembler()
+void SR_writeWord(char *str)
 {
-}
+    word strToWord = 0;
+    for (int i = 0; i < 16; i++)
+    {
+        strToWord = (strToWord << 1) | (str[i] - '0');  // Build the 16-bit word, MSB-first
+    }
 
+    uint8_t counter;
+    for (counter = 0; counter < 16; counter++)
+    {
+        // Shift the MSB first
+        uint8_t shiftVal = (strToWord >> (15 - counter)) & 0x01;
+        digitalWrite(SER, shiftVal);
+        digitalWrite(SCLK, HIGH);
+        delay(10);  // Adjust this delay if needed
+        digitalWrite(SCLK, LOW);
+        delay(10);
+    }
+
+    digitalWrite(RCLK, HIGH);  // Latch the shift register
+    delay(10);
+    digitalWrite(RCLK, LOW);
+
+    Serial.println("Shift register latched");
+    SetYellow();
+
+    // Wait for SlowPin signal to proceed
+    while (digitalRead(SlowPin) == 0)
+    {
+        delay(100);
+    }
+
+    SetRed();
+}
+void Handler(char **data){
+  int addresseCounter = 0;
+  for (int i = 0; i < 3500; i++){
+    Serial.print(addresseCounter);
+    char* addresseCounterStr = intToString(addresseCounter, 16);
+    SR_writeAddress(addresseCounterStr);
+    Serial.print("Adresse dataen blir puttet i: ");
+    Serial.println(addresseCounter, HEX);
+    MARINCycle();
+    addresseCounter++;
+    Serial.print("Data: ");
+    Serial.println(data[i]);
+    SR_writeWord(data[i]);
+    RAMINCycle();
+  }
+}
 void loop()
-{
-    if (localUpload == 0)
-    {
-        digitalWrite(lightPin, LOW);
-        standardDelay = 30;
-        for (int i = 0; i < 32768; i++)
-        {
-            write(i, data[i]);
-        }
-        digitalWrite(lightPin, HIGH);
-    }
-    else
-    {
-    }
-}
+{}

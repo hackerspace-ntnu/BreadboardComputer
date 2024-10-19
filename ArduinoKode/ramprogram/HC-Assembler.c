@@ -83,7 +83,7 @@ void initialize_table()
     transition_table[0]['s'] = 11;      // tore
     transition_table[11]['t'] = 12;     // ore eller io
     transition_table[12]['o'] = 15;     // re
-    transition_table[15]['d'] = 17;     // e
+    transition_table[15]['r'] = 17;     // e
     transition_table[17]['e'] = ACCEPT; // accept
     transition_table[12]['i'] = 16;     // o
 
@@ -97,7 +97,7 @@ void initialize_table()
 
     // after l
     transition_table[3]['i'] = ACCEPT;  // accept
-    transition_table[3]['d'] = 14;      // ind eller io
+    transition_table[3]['d'] = ACCEPT;      // ind eller io TIDLIGERE ->14
     transition_table[14]['i'] = 4;      // nd
     transition_table[14]['i'] = 16;     // o
     transition_table[16]['o'] = ACCEPT; // accept
@@ -257,6 +257,30 @@ void handle_statement()
     }
     printf("\",");
 }
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+char *reverseString(const char *str)
+{
+    int len = strlen(str);                    // Get the length of the string
+    char *reversed = (char *)malloc(len + 1); // Allocate space for the reversed string (+1 for null-terminator)
+
+    if (reversed == NULL) // Check for allocation failure
+    {
+        return NULL;
+    }
+
+    for (int i = 0; i < len; i++)
+    {
+        reversed[i] = str[len - 1 - i]; // Reverse the string
+    }
+
+    reversed[len] = '\0'; // Null-terminate the reversed string
+    return reversed;
+}
+
 // 3 er register og 5 er immidiate
 void get_registers(int destin, int srca, int srcb)
 {
@@ -341,7 +365,8 @@ void get_registers(int destin, int srca, int srcb)
 
             // Convert the extracted number string to an integer
             final = (unsigned int)atoi(num);
-
+            char *finalstr;
+            finalstr = reverseString(intToString(imask & final, 16));
             // Print the extracted number and its value
             fprintf(stderr, "Extracted number: %s\n", num);
             fprintf(stderr, "Converted number: %u\n", final);
@@ -355,7 +380,7 @@ void get_registers(int destin, int srca, int srcb)
             fprintf(stderr, "\n");
             printf("000");
             printf("\",");
-            printf("\"%s", intToString(imask & final, 16));
+            printf("\"%s", finalstr);
         }
         if (active_destin == 0 && active_srca == 0)
         {
@@ -377,11 +402,11 @@ void get_registers(int destin, int srca, int srcb)
 
             // Convert the extracted number string to an integer
             final = (unsigned int)atoi(num);
-
+            char *finalstr;
             // Print the extracted number and its value
             fprintf(stderr, "Extracted number: %s\n", num);
             fprintf(stderr, "Converted number: %u\n", final);
-
+            finalstr = reverseString(intToString(imask & final, 16));
             // Convert the number to binary and print the binary representation
             fprintf(stderr, "Binary representation of %u: ", final);
             for (int i = (sizeof(final) * 8) - 1; i >= 0; i--)
@@ -389,7 +414,7 @@ void get_registers(int destin, int srca, int srcb)
                 fprintf(stderr, "%u", (final >> i) & 1); // Print each bit
             }
             fprintf(stderr, "\n");
-            printf("\",\"%s", intToString(imask & final, 16));
+            printf("\",\"%s", finalstr);
         }
         break;
 
@@ -418,138 +443,154 @@ void firstStage (){
     const char *code =
         "#include <stdlib.h>\n"
         "#include <stdio.h>\n"
-
-        "const int addressBus[15] = {50, 48, 46, 44, 42, 40, 38, 36, 34, 32, 30, 28, 26, 24, 22};\n"
-
-        "const int dataBus[16] = {53, 51, 49, 47, 45, 43, 41, 39, 37, 35, 33, 31, 29, 27, 25, 23};\n"
-
-        "const int lightPin = 8;\n"
-        "const int wePin = 52;\n"
-
-        "int standardDelay = 200;\n"
-
-        "#define antallInstruksjoner 21\n"
-
-        "const unsigned int nop = 0x00;\n"
-        "const unsigned int mv = 0x01;\n"
-        "const unsigned int li = 0x02;\n"
-        "const unsigned int ld = 0x03;\n"
-        "const unsigned int ldind = 0x04;\n"
-        "const unsigned int ldio = 0x05;\n"
-        "const unsigned int stio = 0x06;\n"
-        "const unsigned int add = 0x07;\n"
-        "const unsigned int neg = 0x09;\n"
-        "const unsigned int xorInst = 0x0A;\n"
-        "const unsigned int nand = 0x0B;\n"
-        "const unsigned int andInst = 0x0C;\n"
-        "const unsigned int orInst = 0x0D;\n"
-        "const unsigned int notInst = 0x0E;\n"
-        "const unsigned int jump = 0x0F;\n"
-        "const unsigned int jumpnz = 0x10;\n"
-        "const unsigned int jumpimm = 0x11;\n"
-        "const unsigned int addimm = 0x12;\n"
-        "const unsigned int store = 0x13;\n"
-        "const unsigned int jumpz = 0x14;\n"
-
-        "const unsigned int r0 = 0x0;\n"
-        "const unsigned int r1 = 0x1;\n"
-        "const unsigned int r2 = 0x2;\n"
-        "const unsigned int r3 = 0x3;\n"
-        "const unsigned int r4 = 0x4;\n"
-        "const unsigned int r5 = 0x5;\n"
-        "const unsigned int r6 = 0x6;\n"
-        "const unsigned int r7 = 0x7;\n"
-        "const char* data[1000] = {";
+        "const int SER = 26;\n"
+        "const int RCLK = 22;\n"
+        "const int SCLK = 30;\n"
+        "const int RedLED = A10;\n"
+        "const int BlueLED = A12;\n"
+        "const int GreenLED = A14;\n"
+        "const int SlowPin = 34;\n"
+        "const int MARIN = 38;\n"
+        "const int RAMIN = 42;\n"
+        "#define SetRed() setColor(255, 0, 0)\n"
+        "#define SetGreen() setColor(0, 255, 0)\n"
+        "#define SetYellow() setColor(255, 255, 0)\n"
+        "const char *data[3500] = {\n";
     printf("%s", code);
 }
 void lastStage(){
     const char *code =
-    "};\n"
-    "const unsigned int instruksjoner[antallInstruksjoner] = {nop, mv, li, ld, ldind, ldio, stio, add, sub, neg, xorInst, nand, andInst, orInst, notInst, jump, jumpnz, jumpimm, addimm, store, jumpz};\n\n"
+        "};\n"
+        "char* intToString(int integer, int length){\n"
+        "  char* str = new char[length+1];\n"
+        "  for(int i = length-1; i > -1; i--){\n"
+        "    str[i] = (integer & 1) ? '1' : '0';\n"
+        "    integer >>= 1;\n"
+        "  }\n"
+        "  str[length] = '\\0';\n"
+        "  return str;\n"
+        "}\n"
+        "void setup()\n"
+        "{\n"
+        "    Serial.begin(9600);\n"
+        "    pinMode(SER, OUTPUT);\n"
+        "    pinMode(SCLK, OUTPUT);\n"
+        "    pinMode(RCLK, OUTPUT);\n"
+        "    pinMode(SlowPin, INPUT);\n"
+        "    pinMode(RedLED, OUTPUT);\n"
+        "    pinMode(BlueLED, OUTPUT);\n"
+        "    pinMode(GreenLED, OUTPUT);\n"
+        "    pinMode(MARIN, OUTPUT);\n"
+        "    pinMode(RAMIN, OUTPUT);\n"
+        "    digitalWrite(SER, LOW);\n"
+        "    digitalWrite(SCLK, LOW);\n"
+        "    digitalWrite(SCLK, LOW);\n"
+        "    digitalWrite(MARIN, LOW);\n"
+        "    digitalWrite(RAMIN, HIGH);\n"
+        "    SetRed();\n"
+        "    Serial.print(\"Done setting up\");\n"
+        "    Handler(data);\n"
+        "    SetGreen();\n"
+        "}\n"
+        "void MARINCycle(){\n"
+        "  digitalWrite(MARIN, HIGH);\n"
+        "  delay(10);\n"
+        "  digitalWrite(MARIN, LOW);\n"
+        "}\n"
+        "void RAMINCycle(){\n"
+        "  digitalWrite(RAMIN, LOW);\n"
+        "  delay(10);\n"
+        "  digitalWrite(RAMIN, HIGH);\n"
+        "}\n"
+        "void setColor(int redValue, int greenValue, int blueValue) {\n"
+        "  analogWrite(RedLED, redValue);\n"
+        "  analogWrite(GreenLED, greenValue);\n"
+        "  analogWrite(BlueLED, blueValue);\n"
+        "}\n"
+        "void SR_writeAddress(char *str)\n"
+        "{\n"
+        "    word strToWord = 0;\n"
+        "    for (int i = 0; i < 16; i++)\n"
+        "    {\n"
+        "        strToWord = (strToWord << 1) | (str[i] - '0');\n"
+        "    }\n"
+        "    uint8_t counter;\n"
+        "    word shiftVal;\n"
+        "    for (counter = 0; counter < 16; counter++)\n"
+        "    {\n"
+        "        shiftVal = (strToWord & 0x01);\n"
+        "        digitalWrite(SER, shiftVal);\n"
+        "        digitalWrite(SCLK, HIGH);\n"
+        "        delay(10);\n"
+        "        digitalWrite(SCLK, LOW);\n"
+        "        delay(10);\n"
+        "        strToWord = strToWord >> 1;\n"
+        "    }\n"
+        "    digitalWrite(RCLK, HIGH);\n"
+        "    delay(10);\n"
+        "    digitalWrite(RCLK, LOW);\n"
+        "    Serial.println(\"Shift register latched\");\n"
+        "    SetYellow();\n"
+        "    while(digitalRead(SlowPin) == 0){\n"
+        "      delay(100);\n"
+        "    }\n"
+        "    SetRed();\n"
+        "}\n"
 
-    // Change to 1 to use the assembler, this will compile a assembly code text file,\n"
-    // endre!!!!!\n"
-    "const int localUpload = 0;\n\n"
+        "void SR_writeWord(char *str)\n"
+        "{\n"
+        "    word strToWord = 0;\n"
+        "    for (int i = 0; i < 16; i++)\n"
+        "    {\n"
+        "        strToWord = (strToWord << 1) | (str[i] - '0');  // Build the 16-bit word, MSB-first\n"
+        "    }\n"
+        "\n"
+        "    uint8_t counter;\n"
+        "    for (counter = 0; counter < 16; counter++)\n"
+        "    {\n"
+        "        // Shift the MSB first\n"
+        "        uint8_t shiftVal = (strToWord >> (15 - counter)) & 0x01;\n"
+        "        digitalWrite(SER, shiftVal);\n"
+        "        digitalWrite(SCLK, HIGH);\n"
+        "        delay(10);  // Adjust this delay if needed\n"
+        "        digitalWrite(SCLK, LOW);\n"
+        "        delay(10);\n"
+        "    }\n"
+        "\n"
+        "    digitalWrite(RCLK, HIGH);  // Latch the shift register\n"
+        "    delay(10);\n"
+        "    digitalWrite(RCLK, LOW);\n"
+        "\n"
+        "    Serial.println(\"Shift register latched\");\n"
+        "    SetYellow();\n"
+        "\n"
+        "    // Wait for SlowPin signal to proceed\n"
+        "    while (digitalRead(SlowPin) == 0)\n"
+        "    {\n"
+        "        delay(100);\n"
+        "    }\n"
+        "\n"
+        "    SetRed();\n"
+        "}\n"
 
-    "void setup()\n"
-    "{\n"
-    "    Serial.begin(9600);\n"
-    "    pinMode(wePin, OUTPUT);\n"
-    "    pinMode(lightPin, OUTPUT);\n\n"
-
-    "    digitalWrite(lightPin, HIGH);\n"
-    "    digitalWrite(wePin, HIGH);\n\n"
-
-    "    for (int i = 0; i < 15; i++)\n"
-    "    {\n"
-    "        pinMode(addressBus[i], OUTPUT);\n"
-    "        digitalWrite(addressBus[i], LOW);\n"
-    "    }\n"
-    "    for (int i = 0; i < 16; i++)\n"
-    "    {\n"
-    "        pinMode(dataBus[i], OUTPUT);\n"
-    "        digitalWrite(dataBus[i], LOW);\n"
-    "    }\n\n"
-
-    "    Serial.print(\"Done setting up\");\n"
-    "}\n\n"
-
-    "// Returnerer String med minst signifcant bit til venstre aka motsatt av vanlig.\n"
-    "char *intToString(int integer, int length)\n"
-    "{\n"
-    "    char *str = new char[length + 1];\n"
-    "    for (int i = 0; i < length; i++)\n"
-    "    {\n"
-    "        str[i] = (integer & 1) ? '1' : '0';\n"
-    "        integer >>= 1;\n"
-    "    }\n"
-    "    str[length] = '\\0';\n"
-    "    return str;\n"
-    "}\n\n"
-
-    "// Skriver data til adresse\n"
-    "void write(int address, int data)\n"
-    "{\n"
-    "    char *bitAddr = intToString(address, 15);\n"
-    "    char *bitData = intToString(data, 16);\n"
-    "    for (int i = 0; i < 15; i++)\n"
-    "    {\n"
-    "        digitalWrite(addressBus[i], bitAddr[i] == '1' ? HIGH : LOW);\n"
-    "    }\n"
-    "    for (int i = 0; i < 16; i++)\n"
-    "    {\n"
-    "        digitalWrite(dataBus[i], bitData[i] == '1' ? HIGH : LOW);\n"
-    "    }\n"
-    "    // Lagrer informasjonen\n"
-    "    digitalWrite(wePin, LOW);\n"
-    "    delay(50);\n"
-    "    digitalWrite(wePin, HIGH);\n\n"
-
-    "    delete[] bitAddr;\n"
-    "    delete[] bitData;\n"
-    "    delay(standardDelay);\n"
-    "}\n\n"
-
-    "void assembler()\n"
-    "{\n"
-    "}\n\n"
-
-    "void loop()\n"
-    "{\n"
-    "    if (localUpload == 0)\n"
-    "    {\n"
-    "        digitalWrite(lightPin, LOW);\n"
-    "        standardDelay = 30;\n"
-    "        for (int i = 0; i < 32768; i++)\n"
-    "        {\n"
-    "            write(i, data[i]);\n"
-    "        }\n"
-    "        digitalWrite(lightPin, HIGH);\n"
-    "    }\n"
-    "    else\n"
-    "    {\n"
-    "    }\n"
-    "}\n";
+        "void Handler(char **data){\n"
+        "  int addresseCounter = 0;\n"
+        "  for (int i = 0; i < 3500; i++){\n"
+        "    Serial.print(addresseCounter);\n"
+        "    char* addresseCounterStr = intToString(addresseCounter, 16);\n"
+        "    SR_writeAddress(addresseCounterStr);\n"
+        "    Serial.print(\"Adresse dataen blir puttet i: \");\n"
+        "    Serial.println(addresseCounter, HEX);\n"
+        "    MARINCycle();\n"
+        "    addresseCounter++;\n"
+        "    Serial.print(\"Data: \");\n"
+        "    Serial.println(data[i]);\n"
+        "    SR_writeWord(data[i]);\n"
+        "    RAMINCycle();\n"
+        "  }\n"
+        "}\n"
+        "void loop()\n"
+        "{}\n";
     printf("%s",code);
 
 }
@@ -565,10 +606,12 @@ int main()
     // main
     int line_num = 1;
     int read;
+    int prev_state;
     while ((read = getchar()) != EOF)
     {
         lexeme_buffer[lexeme_length++] = read;
         lexeme_buffer[lexeme_length] = 0;
+        prev_state = state;
         state = transition_table[state][read];
 
         switch (state)
@@ -578,6 +621,12 @@ int main()
             read = getchar();
             if (read != ' ' && read != EOF)
             {
+                if(prev_state == 3){
+                    lexeme_buffer[lexeme_length++] = read;
+                    lexeme_buffer[lexeme_length] = 0;
+                    state = transition_table[14][read];
+                    break;
+                }
                 lexeme_buffer[lexeme_length++] = read;
                 lexeme_buffer[lexeme_length] = 0;
                 state = transition_table[35][read];
@@ -592,7 +641,7 @@ int main()
             }
 
         case ERROR:
-            fprintf(stderr, "error: %d: unrecognized statement: %s, state: %d /n", line_num, lexeme_buffer, state);
+            fprintf(stderr, "error: %d: unrecognized statement: %s, state: %d, read: %d, prev_state: %d /n", line_num, lexeme_buffer, state, read, prev_state);
             exit(EXIT_FAILURE);
         default:
             break;
