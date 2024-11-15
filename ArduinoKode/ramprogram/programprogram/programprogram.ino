@@ -1,22 +1,27 @@
 #include <stdlib.h>
 #include <stdio.h>
-const int SER = 7;
+
 const int RCLK = 4;
 const int SCLK = 6;
+const int SER = 7;
+const int SHIFTOUT = 8;
+
 const int RedLED = A7;
 const int BlueLED = A3;
 const int GreenLED = A5;
-const int SlowPin = 2;
+
+// Trengs ikke foreløpig
+const int GirSpak = 45;
+// const int TstateReset = 46;
+// const int PCReset = 48;
+const int OUTDISABLE = 51;
 const int MARIN = 52;
 const int RAMIN = 53;
-const int SHIFTOUT = 8;
-const int OUTDISABLE = 51;
+
 #define SetRed() setColor(255, 0, 0)
 #define SetGreen() setColor(0, 255, 0)
-#define SetYellow() setColor(255, 255, 0)
-#define SetBlue() setColor(0, 0, 255) // stops when mar and ram reads inn data
 const char *data[3500] = {
-    "0000000000001000", "0000001000000000", "0010000010000100", "0100010000000100", "0000000000000000", "E"};
+    "0000000000001000", "0000000000000000", "1000001001001000", "1000000000000000", "0000000001000100", "0100000000000000", "E"};
 char *intToString(int integer, int length)
 {
     char *str = new char[length + 1];
@@ -32,41 +37,32 @@ char *intToString(int integer, int length)
 void MARINCycle()
 {
     digitalWrite(MARIN, HIGH);
-    waitBlue();
+    delay(100);
     digitalWrite(MARIN, LOW);
 }
 void RAMINCycle()
 {
     digitalWrite(RAMIN, HIGH);
-    waitBlue();
+    delay(100);
     digitalWrite(RAMIN, LOW);
 }
 
 void shiftout_en()
 {
     digitalWrite(OUTDISABLE, LOW);
-    delay(10);
+    delay(100);
     digitalWrite(SHIFTOUT, LOW);
-    delay(10);
+    delay(100);
+    digitalWrite(GirSpak, HIGH);
 }
 
 void shiftout_dis()
 {
+    digitalWrite(GirSpak, LOW);
     digitalWrite(SHIFTOUT, HIGH);
-    delay(10);
+    delay(100);
     digitalWrite(OUTDISABLE, HIGH);
-    delay(10);
-}
-
-void waitBlue()
-{
-    setColor(0, 0, 255);
-    delay(200);
-    while (digitalRead(SlowPin) == 0)
-    {
-        delay(100);
-    }
-    SetRed();
+    delay(100);
 }
 
 // flytter til å matche ir, skiller ikke mellom immidiates og instruksjon så rip
@@ -120,15 +116,9 @@ void SR_writeAddress(char *str)
         strToWord = strToWord >> 1;
     }
     digitalWrite(RCLK, HIGH);
-    delay(10);
+    delay(100);
     digitalWrite(RCLK, LOW);
     Serial.println("Shift register latched");
-    SetYellow();
-    while (digitalRead(SlowPin) == 0)
-    {
-        delay(100);
-    }
-    SetRed();
 }
 void SR_writeWord(char *str)
 {
@@ -155,15 +145,6 @@ void SR_writeWord(char *str)
     digitalWrite(RCLK, LOW);
 
     Serial.println("Shift register latched");
-    SetYellow();
-
-    // Wait for SlowPin signal to proceed
-    while (digitalRead(SlowPin) == 0)
-    {
-        delay(100);
-    }
-
-    SetRed();
 }
 void Handler(char **data)
 {
@@ -190,6 +171,7 @@ void Handler(char **data)
         SR_writeWord(data[i]);
         RAMINCycle();
     }
+    delay(10);
     shiftout_dis();
 }
 
@@ -199,7 +181,6 @@ void setup()
     pinMode(SER, OUTPUT);
     pinMode(SCLK, OUTPUT);
     pinMode(RCLK, OUTPUT);
-    pinMode(SlowPin, INPUT);
     pinMode(RedLED, OUTPUT);
     pinMode(BlueLED, OUTPUT);
     pinMode(GreenLED, OUTPUT);
@@ -207,6 +188,7 @@ void setup()
     pinMode(RAMIN, OUTPUT);
     pinMode(SHIFTOUT, OUTPUT);
     pinMode(OUTDISABLE, OUTPUT);
+    pinMode(GirSpak, OUTPUT);
     digitalWrite(SER, LOW);
     digitalWrite(SCLK, LOW);
     digitalWrite(SCLK, LOW);
@@ -214,6 +196,7 @@ void setup()
     digitalWrite(RAMIN, LOW);
     digitalWrite(SHIFTOUT, HIGH);
     digitalWrite(OUTDISABLE, HIGH);
+    digitalWrite(GirSpak, HIGH);
     SetRed();
     Serial.print("Done setting up");
     Handler(data);
