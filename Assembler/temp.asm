@@ -1,0 +1,3 @@
+li r0, 0x5
+mv r1, r0
+addi r1, r1, 0x1
