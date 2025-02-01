@@ -1,0 +1,9 @@
+sub -> DABC -> {
+    neg CB
+    add DAC
+}
+or -> DAB -> {
+    nand AAA
+    nand BBB
+    nand DAB
+}
