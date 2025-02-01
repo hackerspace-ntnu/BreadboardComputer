@@ -1,0 +1,5 @@
+li r0 r0 64
+mv r1 r0
+mv r2 r1
+store r0 r0
+ld r3 r2 64
